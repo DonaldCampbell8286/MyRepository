@@ -19,11 +19,12 @@
 # MAGIC /*
 # MAGIC Sample DQ check SQL, each individual test separated by union all will yield one row per test
 # MAGIC This code can be formatted in a readable manner for testing
+# MAGIC DATASET = Applicable Balancing Services Volume
 # MAGIC */
 # MAGIC 
 # MAGIC SELECT current_date as executionTime,'DQ-218' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (100.00*COUNT(bmUnitID))/COUNT(*) as score FROM ApplicableBalancingServicesVolume
 # MAGIC union all
-# MAGIC SELECT current_date as executionTime,'DQ-193' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (Count(bmUnitID)* 100.00 / (Select Count(*) From ApplicableBalancingServicesVolume)) as score FROM ApplicableBalancingServicesVolume WHERE SUBSTRING(bmUnitID,1,1) BETWEEN '0' AND '9' OR SUBSTRING(bmUnitID,1,1) BETWEEN 'A' AND 'Z' AND SUBSTRING(bmUnitID,2,1) LIKE '_'
+# MAGIC SELECT current_date as executionTime,'DQ-185' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (Count(bmUnitID)* 100.00 / (Select Count(*) From ApplicableBalancingServicesVolume)) as score FROM ApplicableBalancingServicesVolume WHERE SUBSTRING(bmUnitID,1,1) BETWEEN '0' AND '9' OR SUBSTRING(bmUnitID,1,1) BETWEEN 'A' AND 'Z' AND SUBSTRING(bmUnitID,2,1) LIKE '_'
 
 # COMMAND ----------
 
@@ -39,7 +40,7 @@ Note: you will have to undo the formatting from the previous step, also note the
 5
  
 6
-spark.sql("SELECT current_date as executionTime,'DQ-218' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (100.00*COUNT(bmUnitID))/COUNT(*) as score FROM ApplicableBalancingServicesVolume union all SELECT current_date as executionTime,'DQ-193' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (Count(bmUnitID)* 100.00 / (Select Count(*) From ApplicableBalancingServicesVolume)) as score FROM ApplicableBalancingServicesVolume WHERE SUBSTRING(bmUnitID,1,1) BETWEEN '0' AND '9' OR SUBSTRING(bmUnitID,1,1) BETWEEN 'A' AND 'Z' AND SUBSTRING(bmUnitID,2,1) LIKE '_'").coalesce(1).write.format("org.apache.spark.sql.json").mode("overwrite").save("mnt/BMRS/DQ/ABSVDQResult.json")
+spark.sql("SELECT current_date as executionTime,'DQ-218' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (100.00*COUNT(bmUnitID))/COUNT(*) as score FROM ApplicableBalancingServicesVolume union all SELECT current_date as executionTime,'DQ-185' as identity, 'Test' as dqReportProvider, count(*) as rowCount, (Count(bmUnitID)* 100.00 / (Select Count(*) From ApplicableBalancingServicesVolume)) as score FROM ApplicableBalancingServicesVolume WHERE SUBSTRING(bmUnitID,1,1) BETWEEN '0' AND '9' OR SUBSTRING(bmUnitID,1,1) BETWEEN 'A' AND 'Z' AND SUBSTRING(bmUnitID,2,1) LIKE '_'").coalesce(1).write.format("org.apache.spark.sql.json").mode("overwrite").save("mnt/BMRS/DQ/ABSVDQResult.json")
 
 # COMMAND ----------
 
